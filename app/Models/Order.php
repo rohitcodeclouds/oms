@@ -10,6 +10,12 @@ use App\Models\Shipment;
 
 class Order extends Model
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_SHIPPED = 'shipped';
+    const STATUS_DELIVERED = 'delivered';
+    const STATUS_CANCELLED = 'cancelled';
+    
     protected $fillable = [
         'user_id',
         'total_amount',
