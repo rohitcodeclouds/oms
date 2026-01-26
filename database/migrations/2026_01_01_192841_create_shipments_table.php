@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->text('address');
-            $table->string('status');
+            $table->string('status', ['pending','shipped','delivered','cancelled']);
             $table->timestamp('shipped_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
+
+            $table->index('order_id');
+            $table->index('status');
         });
     }
 
