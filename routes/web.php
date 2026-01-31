@@ -24,7 +24,7 @@ Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name(
 
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/orders/{order}/status', [OrderController::class, 'updateStatus']);
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
