@@ -1,4 +1,4 @@
-<php
+<?php
 
 namespace App\Services;
 
@@ -7,7 +7,7 @@ use Exception;
 
 class OrderService {
 
-    public function markAsProcessing(){
+    public function markAsProcessing(Order $order){
         if($order->status !== Order::STATUS_PENDING){
             throw new Exception('Order cannot be process');
         }
@@ -17,7 +17,7 @@ class OrderService {
         ]);
     }
 
-    public function markAsShipped(){
+    public function markAsShipped(Order $order){
         if($order->status !== Order::STATUS_PROCESSING) {
             throw new Exception('Order cannot be shipped');
         }
@@ -28,22 +28,22 @@ class OrderService {
 
     }
 
-    public function markAsDelivered() {
+    public function markAsDelivered(Order $order) {
         if($order->status !== Order::STATUS_SHIPPED) {
             throw new Exception('Order cannot be delivered');
         }
 
         $order->update([
             'status' => Order::STATUS_DELIVERED
-        ])
+        ]);
     }
 
-    public function cancel(){
-        if(in_array($order->status, [
+    public function cancel(Order $order){
+        if(!in_array($order->status, [
             Order::STATUS_PENDING,
             Order::STATUS_PROCESSING
         ])) {
-            throw new Exception('Order cannot be cancelled')
+            throw new Exception('Order cannot be cancelled');
         }
 
         $order->update([
