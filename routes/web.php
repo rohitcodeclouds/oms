@@ -1,11 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProductImageController;
 
 require __DIR__ . '/auth.php';
+
+
+// Route::get('/auth-debug', function () {
+//     return [
+//         'session_id' => session()->getId(),
+//         'auth_check' => auth()->check(),
+//         'user' => auth()->user(),
+//     ];
+// });
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
@@ -26,6 +37,7 @@ Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name(
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/orders/{order}/status', [OrderController::class, 'updateStatus']);
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])
-        ->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('products', ProductController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    Route::delete('/admin/product-images/{product_image}', [ProductImageController::class, 'destroy'])->name('product-images.destroy');
 });

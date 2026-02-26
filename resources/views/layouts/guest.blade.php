@@ -209,7 +209,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             @if(session('success'))
                 toastr.success(@json(session('success')));
-            @endIf
+            @endif
 
             @if(session('error'))
                 toastr.error(@json(session('error')));

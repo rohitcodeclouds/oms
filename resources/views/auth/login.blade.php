@@ -17,7 +17,7 @@
             <p class="text-neutral-400 text-sm">Sign in to access your dashboard</p>
         </div>
 
-        <form method="POST" action="/login" class="space-y-6">
+        <form method="POST" action="{{route('login')}}" class="space-y-6">
             @csrf
 
             <!-- Email Input -->
@@ -60,7 +60,7 @@
                     class="w-4 h-4 text-neutral-600 border-neutral-700 rounded bg-neutral-800 focus:ring-offset-0 focus:ring-neutral-500 cursor-pointer">
                 <label for="remember_me"
                     class="ml-2 block text-sm text-neutral-400 cursor-pointer select-none hover:text-neutral-300 transition-colors">
-                    Remember me for 30 days
+                    Remember me
                 </label>
             </div>
 

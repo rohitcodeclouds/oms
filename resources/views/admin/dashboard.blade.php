@@ -81,7 +81,7 @@
                 </div>
                 <div class="mt-6">
                     <p class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Total Products</p>
-                    <h3 class="text-3xl font-bold text-neutral-800 dark:text-white tracking-tight mt-1">542</h3>
+                    <h3 class="text-3xl font-bold text-neutral-800 dark:text-white tracking-tight mt-1">{{$totalProduct}}</h3>
                 </div>
                 <div class="mt-6 w-full h-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
                     <div class="h-full bg-amber-500 w-[45%] group-hover:w-[48%] transition-all duration-1000 shadow-[0_0_8px_rgba(245,158,11,0.4)]"></div>

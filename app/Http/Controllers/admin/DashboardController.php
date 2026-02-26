@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Product;
 
 class DashboardController extends Controller
 {
@@ -17,6 +18,7 @@ class DashboardController extends Controller
             ->sum('total_amount');
 
         $totalCustomers = User::where('role', 'customer')->count();
+        $totalProduct = Product::where('is_active', 1)->count();
 
         $recentOrders = Order::with('user')
             ->latest()
@@ -27,6 +29,7 @@ class DashboardController extends Controller
             'totalOrders',
             'totalRevenue',
             'totalCustomers',
+            'totalProduct',
             'recentOrders'
         ));
     }

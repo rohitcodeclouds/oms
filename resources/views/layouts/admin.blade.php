@@ -21,11 +21,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -154,56 +157,92 @@
 </head>
 
 <!-- Animated Background -->
-<div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 bg-[#f1f5f9] dark:bg-neutral-950" id="background-container">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(60,80,224,0.05),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(60,80,224,0.03),transparent_40%)]"></div>
-
-        <div class="parallax-layer absolute inset-0 pointer-events-none opacity-40 dark:opacity-20" data-speed="0.04">
-            <img src="{{ asset('images/cube-3d.png') }}" class="absolute top-[10%] left-[5%] w-24 mix-blend-multiply dark:mix-blend-screen animate-float blur-[1px] opacity-20">
-            <img src="{{ asset('images/sphere-3d.png') }}" class="absolute top-[60%] left-[15%] w-32 mix-blend-multiply dark:mix-blend-screen animate-float-delayed opacity-20">
-            <img src="{{ asset('images/pyramid-3d.png') }}" class="absolute top-[20%] right-[10%] w-28 mix-blend-multiply dark:mix-blend-screen animate-float opacity-20">
-            <img src="{{ asset('images/torus-3d.png') }}" class="absolute bottom-[10%] left-[40%] w-40 mix-blend-multiply dark:mix-blend-screen animate-float-delayed opacity-10">
-            <img src="{{ asset('images/octahedron-3d.png') }}" class="absolute bottom-[20%] right-[30%] w-24 mix-blend-multiply dark:mix-blend-screen animate-float opacity-20">
-        </div>
-        
-        <div class="absolute inset-0 opacity-[0.03] pointer-events-none"
-            style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.5%22/%3E%3C/svg%3E');">
-        </div>
+<div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 bg-[#f1f5f9] dark:bg-[#0f172a]"
+    id="background-container">
+    <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(60,80,224,0.08),transparent_40%),radial-gradient(circle_at_bottom_left,rgba(60,80,224,0.05),transparent_40%)]">
     </div>
+
+    <div class="parallax-layer absolute inset-0 pointer-events-none opacity-40 dark:opacity-50" data-speed="0.04">
+        <img src="{{ asset('images/cube-3d.png') }}"
+            class="absolute top-[10%] left-[5%] w-24 mix-blend-multiply dark:mix-blend-screen animate-float blur-[1px] opacity-20 dark:opacity-40">
+        <img src="{{ asset('images/sphere-3d.png') }}"
+            class="absolute top-[60%] left-[15%] w-32 mix-blend-multiply dark:mix-blend-screen animate-float-delayed opacity-20 dark:opacity-40">
+        <img src="{{ asset('images/pyramid-3d.png') }}"
+            class="absolute top-[20%] right-[10%] w-28 mix-blend-multiply dark:mix-blend-screen animate-float opacity-20 dark:opacity-40">
+        <img src="{{ asset('images/torus-3d.png') }}"
+            class="absolute bottom-[10%] left-[40%] w-40 mix-blend-multiply dark:mix-blend-screen animate-float-delayed opacity-10 dark:opacity-30">
+        <img src="{{ asset('images/octahedron-3d.png') }}"
+            class="absolute bottom-[20%] right-[30%] w-24 mix-blend-multiply dark:mix-blend-screen animate-float opacity-20 dark:opacity-40">
+    </div>
+
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.5%22/%3E%3C/svg%3E');">
+    </div>
+</div>
 
 <div class="flex min-h-screen">
     <!-- Sidebar -->
     <aside class="sidebar-glass fixed left-0 top-0 h-full transition-all duration-300 z-50 overflow-hidden"
         :class="sidebarOpen ? 'w-64' : 'w-20 lg:w-20 w-0'" x-cloak>
         <div class="flex flex-col h-full">
-                <!-- Logo -->
-                <div class="flex items-center justify-between px-6 py-8">
-                    <div class="flex items-center space-x-3 overflow-hidden">
-                        <div class="oms-logo-icon shrink-0"></div>
-                        <span class="text-xl font-bold tracking-tight text-white whitespace-nowrap" x-show="sidebarOpen" x-transition>OMS <span class="text-neutral-400 font-light">SYSTEM</span></span>
-                    </div>
+            <!-- Logo -->
+            <div class="flex items-center justify-between px-6 py-8">
+                <div class="flex items-center space-x-3 overflow-hidden">
+                    <div class="oms-logo-icon shrink-0"></div>
+                    <span class="text-xl font-bold tracking-tight text-white whitespace-nowrap" x-show="sidebarOpen"
+                        x-transition>OMS <span class="text-neutral-400 font-light">SYSTEM</span></span>
                 </div>
+            </div>
 
-                <!-- Nav -->
-                <nav class="flex-1 px-4 space-y-1 mt-4">
-                    <a href="{{ route('admin.dashboard') }}" class="flex items-center p-3 rounded-lg transition-all group {{ Route::is('admin.dashboard') ? 'bg-primary-500 text-white' : 'text-neutral-400 hover:bg-neutral-800 hover:text-white' }}" :class="sidebarOpen ? '' : 'justify-center'">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        <span class="ml-3 font-semibold text-sm" x-show="sidebarOpen" x-transition>Dashboard</span>
-                    </a>
-                    <a href="#" class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group" :class="sidebarOpen ? '' : 'justify-center'">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                        <span class="ml-3 font-medium text-sm" x-show="sidebarOpen" x-transition>Orders</span>
-                    </a>
-                    <a href="#" class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group" :class="sidebarOpen ? '' : 'justify-center'">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                        <span class="ml-3 font-medium text-sm" x-show="sidebarOpen" x-transition>Products</span>
-                    </a>
-                    <a href="#" class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group" :class="sidebarOpen ? '' : 'justify-center'">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                        <span class="ml-3 font-medium text-sm" x-show="sidebarOpen" x-transition>Analytics</span>
-                    </a>
+            <!-- Nav -->
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a href="{{ route('admin.dashboard') }}"
+                    class="flex items-center p-3 rounded-lg transition-all group {{ Route::is('admin.dashboard') ? 'bg-primary-500 text-white' : 'text-neutral-400 hover:bg-neutral-800 hover:text-white' }}"
+                    :class="sidebarOpen ? '' : 'justify-center'">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <span class="ml-3 font-semibold text-sm" x-show="sidebarOpen" x-transition>Dashboard</span>
+                </a>
+                <a href="#"
+                    class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group"
+                    :class="sidebarOpen ? '' : 'justify-center'">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span class="ml-3 font-medium text-sm" x-show="sidebarOpen" x-transition>Orders</span>
+                </a>
+                <a href="{{route('products.index')}}"
+                    class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group"
+                    :class="sidebarOpen ? '' : 'justify-center'">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                    <span class="ml-3 font-medium text-sm" x-show="sidebarOpen" x-transition>Products</span>
+                </a>
+                <a href="#"
+                    class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group"
+                    :class="sidebarOpen ? '' : 'justify-center'">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    <span class="ml-3 font-medium text-sm" x-show="sidebarOpen" x-transition>Analytics</span>
+                </a>
                 <div class="pt-4 mt-4 border-t border-white/5">
-                    <a href="#" class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group" :class="sidebarOpen ? '' : 'justify-center'">
-                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <a href="#"
+                        class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group"
+                        :class="sidebarOpen ? '' : 'justify-center'">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
                         <span class="ml-3 font-medium text-sm" x-show="sidebarOpen" x-transition>Settings</span>
                     </a>
                 </div>
@@ -383,6 +422,45 @@
         });
     });
 </script>
+ <!-- jQuery (required) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<!-- Toastr Script -->
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "3000"
+    };
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        @if(session('success'))
+            toastr.success(@json(session('success')));
+        @endif
+
+        @if(session('error'))
+            toastr.error(@json(session('error')));
+        @endif
+
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                toastr.error(@json($error));
+            @endforeach
+        @endif
+
+        @if(session('warning'))
+            toastr.warning(@json(session('warning')));
+        @endif
+
+        @if(session('info'))
+            toastr.info(@json(session('info')));
+        @endif
+    });
+</script>
+
 </body>
 
 </html>

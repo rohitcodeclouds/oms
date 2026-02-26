@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->text('address');
-            $table->string('status', ['pending','shipped','delivered','cancelled']);
+            $table->enum('status', ['pending','shipped','delivered','cancelled']);
             $table->timestamp('shipped_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
