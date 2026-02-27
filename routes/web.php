@@ -43,3 +43,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::middleware('auth')->post('/orders', [OrderController::class, 'store']);
+Route::middleware('auth')->post('/orders/{order}/pay', [PaymentController::class, 'store']);
