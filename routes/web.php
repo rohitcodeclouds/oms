@@ -36,8 +36,10 @@ Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name(
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::post('/admin/orders/{order}/status', [OrderController::class, 'updateStatus']);
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/orders/{order}/status', [OrderController::class, 'updateStatus']);
     Route::resource('products', ProductController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     Route::delete('/admin/product-images/{product_image}', [ProductImageController::class, 'destroy'])->name('product-images.destroy');
 });
+
+Route::middleware('auth')->post('/orders', [OrderController::class, 'store']);
