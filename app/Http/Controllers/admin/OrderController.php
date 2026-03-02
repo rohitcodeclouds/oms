@@ -24,8 +24,8 @@ class OrderController extends Controller
         ]);
 
         $order = $service->createOrder(
-            //User::find(1),  //For Testing
-            auth()->user(),
+            User::find(1),  //For Testing
+            //auth()->user(),
             $data['items'],
             $data['shipping_address'],
             $data['billing_address']

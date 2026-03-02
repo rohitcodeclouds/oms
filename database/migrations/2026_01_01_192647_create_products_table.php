@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('sku')->nullable()->unique();
             $table->decimal('weight', 8, 2)->nullable(); // in kg or grams
             $table->string('dimension')->nullable();    // e.g. 10x20x30 cm
-            $table->boolean('is_active')->default(true)->index();
+            $table->boolean('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
 

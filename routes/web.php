@@ -44,3 +44,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::middleware('auth')->post('/orders', [OrderController::class, 'store']);
 Route::middleware('auth')->post('/orders/{order}/pay', [PaymentController::class, 'store']);
+Route::middleware('auth')->group(function () {
+    Route::post('/orders/{order}/ship', [ShipmentController::class, 'store']);
+    Route::post('/orders/{order}/deliver', [ShipmentController::class, 'deliver']);
+});
