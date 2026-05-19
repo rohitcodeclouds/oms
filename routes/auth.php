@@ -16,11 +16,15 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
     ->name('login');
 
-Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+Route::post('/forgot-password', [\App\Http\Controllers\Auth\AuthController::class, 'sendResetLinkEmail'])
     ->middleware('guest')
     ->name('password.email');
 
-Route::post('/reset-password', [NewPasswordController::class, 'store'])
+Route::get('/reset-password/{token}', [\App\Http\Controllers\Auth\AuthController::class, 'showResetPassword'])
+    ->middleware('guest')
+    ->name('password.reset');
+
+Route::post('/reset-password', [\App\Http\Controllers\Auth\AuthController::class, 'resetPassword'])
     ->middleware('guest')
     ->name('password.store');
 

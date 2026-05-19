@@ -28,7 +28,7 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -126,32 +126,27 @@
             display: none !important;
         }
 
-        /* Custom Logo CSS */
-        .oms-logo-icon {
-            position: relative;
-            width: 34px;
-            height: 34px;
-            background: linear-gradient(135deg, #3c50e0 0%, #2563eb 100%);
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(60, 80, 224, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+        /* Responsive Table Enhancement */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .dark .oms-logo-icon {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        .table-responsive table {
+            min-width: 800px;
+            /* Force scroll on mobile for large tables */
         }
 
-        .oms-logo-icon::after {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 2px;
-            transform: rotate(45deg);
+        /* Sidebar scroll if content too long */
+        aside.sidebar-glass {
+            overflow-y: auto;
+            scrollbar-width: none;
+            /* Hide scrollbar for cleaner look */
+        }
+
+        aside.sidebar-glass::-webkit-scrollbar {
+            display: none;
         }
     </style>
 </head>
@@ -183,8 +178,8 @@
 
 <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside class="sidebar-glass fixed left-0 top-0 h-full transition-all duration-300 z-50 overflow-hidden"
-        :class="sidebarOpen ? 'w-64' : 'w-20 lg:w-20 w-0'" x-cloak>
+    <aside class="sidebar-glass fixed left-0 top-0 h-full transition-all duration-300 z-50 overflow-y-auto"
+        :class="sidebarOpen ? 'w-64' : 'w-0 lg:w-20'" x-cloak>
         <div class="flex flex-col h-full">
             <!-- Logo -->
             <div class="flex items-center justify-between px-6 py-8">
@@ -206,8 +201,8 @@
                     </svg>
                     <span class="ml-3 font-semibold text-sm" x-show="sidebarOpen" x-transition>Dashboard</span>
                 </a>
-                <a href="#"
-                    class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group"
+                <a href="{{ route('orders.index') }}"
+                    class="flex items-center p-3 {{ Route::is('orders.*') ? 'bg-primary-500 text-white' : 'text-neutral-400 hover:bg-neutral-800 hover:text-white' }} rounded-lg transition-all group"
                     :class="sidebarOpen ? '' : 'justify-center'">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -216,7 +211,7 @@
                     <span class="ml-3 font-medium text-sm" x-show="sidebarOpen" x-transition>Orders</span>
                 </a>
                 <a href="{{route('products.index')}}"
-                    class="flex items-center p-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all group"
+                    class="flex items-center p-3 {{ Route::is('products.*') ? 'bg-primary-500 text-white' : 'text-neutral-400 hover:bg-neutral-800 hover:text-white' }} rounded-lg transition-all group"
                     :class="sidebarOpen ? '' : 'justify-center'">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -263,7 +258,8 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 transition-all duration-300 min-h-screen" :class="sidebarOpen ? 'lg:ml-64' : 'ml-20 ml-0'">
+    <main class="flex-1 transition-all duration-300 min-h-screen"
+        :class="sidebarOpen ? 'lg:ml-64 ml-0' : 'lg:ml-20 ml-0'">
         <!-- Header -->
         <header
             class="h-16 sm:h-20 glass sticky top-0 z-40 px-4 sm:px-8 flex items-center justify-between mx-4 sm:mx-6 mt-4 rounded-2xl shadow-sm">
@@ -355,19 +351,24 @@
                         </div>
                         <div
                             class="w-9 h-9 rounded-xl glass p-0.5 group-hover:scale-105 transition-transform border-primary-500/20">
-                            <img src="https://ui-avatars.com/api/?name=Admin&background=22c55e&color=fff"
-                                class="w-full h-full rounded-[10px]" alt="Avatar">
+                            @if(auth()->user() && auth()->user()->profile_photo_path)
+                                <img src="{{ Storage::url(auth()->user()->profile_photo_path) }}"
+                                    class="w-full h-full rounded-[10px] object-cover" alt="Avatar">
+                            @else
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user() ? auth()->user()->name : 'Admin') }}&background=22c55e&color=fff"
+                                    class="w-full h-full rounded-[10px] object-cover" alt="Avatar">
+                            @endif
                         </div>
                     </div>
                     <div x-show="profileOpen" x-transition
                         class="absolute right-0 mt-3 w-48 glass rounded-2xl shadow-xl z-50 overflow-hidden py-2 dark:bg-black"
                         x-cloak>
-                        <a href="#"
+                        <a href="{{ route('profile.edit') }}"
                             class="flex items-center px-4 py-2.5 text-xs font-medium hover:bg-black/5 dark:hover:bg-white/5 dark:text-white transition-colors"><svg
                                 class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg> Edit Profile</a>
-                        <a href="#"
+                        <a href="{{ route('support') }}"
                             class="flex items-center px-4 py-2.5 text-xs font-medium hover:bg-black/5 dark:hover:bg-white/5 dark:text-white transition-colors"><svg
                                 class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -422,7 +423,7 @@
         });
     });
 </script>
- <!-- jQuery (required) -->
+<!-- jQuery (required) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- Toastr JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

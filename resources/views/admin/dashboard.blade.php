@@ -16,10 +16,12 @@
                     class="bg-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-neutral-600 hover:text-primary-500 transition-all border border-neutral-200">
                     Download Report
                 </button>
-                <button
-                    class="bg-primary-500 text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-primary-600 hover:scale-[1.02] transition-all active:scale-95 shadow-lg shadow-primary-500/20">
-                    + Add Product
-                </button>
+                <a href="{{route('products.index')}}">
+                    <button
+                        class="bg-primary-500 text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold hover:bg-primary-600 hover:scale-[1.02] transition-all active:scale-95 shadow-lg shadow-primary-500/20">
+                        + Add Product
+                    </button>
+                </a>
             </div>
         </div>
 
@@ -122,16 +124,18 @@
                 </div>
 
                 <!-- CSS Chart Visual -->
-                <div class="flex items-end justify-between h-56 mt-12 px-2 space-x-1.5 sm:space-x-4">
-                    @php $months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG']; $heights = [60, 45, 85, 70, 40, 92, 55, 75]; @endphp
-                    @foreach($months as $index => $month)
-                    <div class="flex flex-col items-center flex-1 space-y-4">
-                        <div class="w-full bg-black/5 dark:bg-neutral-800/50 rounded-xl relative h-40 group">
-                            <div class="absolute bottom-0 w-full bg-primary-500 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all duration-700 group-hover:bg-primary-600" style="height: {{ $heights[$index] }}%"></div>
+                <div class="table-responsive">
+                    <div class="flex items-end justify-between h-56 mt-12 px-2 space-x-1.5 sm:space-x-4 min-w-[600px]">
+                        @php $months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG']; $heights = [60, 45, 85, 70, 40, 92, 55, 75]; @endphp
+                        @foreach($months as $index => $month)
+                        <div class="flex flex-col items-center flex-1 space-y-4">
+                            <div class="w-full bg-black/5 dark:bg-neutral-800/50 rounded-xl relative h-40 group">
+                                <div class="absolute bottom-0 w-full bg-primary-500 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.2)] transition-all duration-700 group-hover:bg-primary-600" style="height: {{ $heights[$index] }}%"></div>
+                            </div>
+                            <span class="text-[10px] font-bold text-neutral-400">{{ $month }}</span>
                         </div>
-                        <span class="text-[10px] font-bold text-neutral-400">{{ $month }}</span>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
             </div>
 
@@ -249,8 +253,8 @@
                 <h3 class="text-lg sm:text-xl font-bold text-neutral-800 dark:text-white">Recent Orders</h3>
                 <a href="#" class="text-[10px] font-bold text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors uppercase tracking-widest">View All</a>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
+            <div class="table-responsive">
+                <table class="w-full text-left min-w-[800px]">
                     <thead>
                         <tr class="text-[10px] uppercase tracking-widest text-neutral-500 bg-neutral-50 dark:bg-white/[0.02]">
                             <th class="px-8 py-5 font-bold">Order ID</th>

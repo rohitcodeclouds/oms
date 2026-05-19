@@ -12,6 +12,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        $categories = Category::all();
         $query = Product::with('category');
         //Search
         $query->when($request->search, function ($q) use ($request) {
@@ -42,10 +43,15 @@ class ProductController extends Controller
 
 
         $products = $query->latest()->paginate($perPage)->withQueryString();
-        // dd($product->toArray());
+
         $active_product_count = Product::where('is_active', 1)->count();
         $product_outofstock = Product::where('stock', 0)->count();
-        return view('admin.products.index', compact('products', 'active_product_count', 'product_outofstock'));
+
+        if ($request->ajax()) {
+            return view('admin.products.partials._table', compact('products'))->render();
+        }
+
+        return view('admin.products.index', compact('products', 'active_product_count', 'product_outofstock', 'categories'));
     }
 
     public function create()
